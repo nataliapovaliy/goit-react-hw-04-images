@@ -1,11 +1,12 @@
 import css from '../ImageGallery/ImageGallery.module.css';
 
-const ImageGalleryItem = () => {
+export const ImageGalleryItem = ({id, webformatURL}) => {
     return (
         <li className={css.ImageGalleryItem}>
             <img
+                key={id}
                 className={css.ImageGalleryItemImage}
-                src=""
+                src={webformatURL} 
                 alt="" />
         </li>
     )

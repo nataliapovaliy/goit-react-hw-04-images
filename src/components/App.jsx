@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Searchbar from './Searchbar/Searchbar';
-// import ImageGallery from './ImageGallery/ImageGalleryItem';
-// import Button from './Button/Button';
+import ImageGallery from './ImageGallery/ImageGallery';
+import Button from './Button/Button';
 import css from '../components/App.module.css';
-// import { fetchSearch } from '../services/gallery-api';
+import { fetchSearch } from '../services/gallery-api';
 
 class App extends Component {
 
@@ -12,30 +12,61 @@ class App extends Component {
     searchText: '',
     page: 1,
     isListShown: false,
+    isLoading: false,
   }
 
-  handleSubmit = (searchText) => {
-		this.setState({ searchText })
-	}
+  componentDidUpdate(_, prevState) {
+    const { isListShown, page } = this.state;
+    if (
+      (isListShown && prevState.isListShown !== isListShown) ||
+      (isListShown && prevState.page !== page)
+    ) { this.getGallery(); }
+    if (!isListShown && prevState.isListShown !== isListShown) {
+      this.setState({ page: 1, images: [] });
+    }
+  }
+  
 
-  // getGallery = () => {
-  //   fetchSearch(this.state.searchText, this.state.page)
-  //     .then(data => {
-  //       this.setState(prevState => ({
-  //         images: [...prevState.images, ...data.hits]
-  //       }))
-  //   })
-  // }
+  // handleSubmit = (searchText) => {
+	// 	this.setState({ searchText })
+	// }
 
-// clickHandler =() => {}
+  getGallery = () => {
+    this.setState({ isLoading: true });
+    fetchSearch(this.state.searchText, this.state.page)
+      .then(data => {
+        this.setState(prevState => ({
+          images: [...prevState.images, ...data.hits]
+        }));
+      })
+      .catch(error => console.log(error))
+      .finally(() => this.setState({ isLoading: false }));
+  }
+
+  showGallery = () => {
+    this.setState(prevState => ({ isListShown: !prevState.isListShown }));
+  }
+
+  loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  }
 
   render() {
+    const { images } = this.state;
     return (
       <>
         <div className={css.App}>
-          <Searchbar onSearch={this.handleSubmit} />
-          {/* <ImageGallery /> */}
-          {/* <Button onClick={this.clickHandler} text='Load more'/> */}
+          
+          <Searchbar
+            onSearch={this.handleSubmit} />
+          
+          <ImageGallery 
+            images={images} /> 
+          
+          <Button
+            clickHandler={this.loadMore}
+            text='Load more' /> 
+          
         </div>
       </>
     )

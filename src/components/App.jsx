@@ -27,7 +27,7 @@ class App extends Component {
   //   })
   // }
 
-clickHandler =() => {}
+// clickHandler =() => {}
 
   render() {
     return (
@@ -35,7 +35,7 @@ clickHandler =() => {}
         <div className={css.App}>
           <Searchbar onSearch={this.handleSubmit} />
           {/* <ImageGallery /> */}
-          <Button onClick={this.clickHandler} text='Load more'/>
+          {/* <Button onClick={this.clickHandler} text='Load more'/> */}
         </div>
       </>
     )

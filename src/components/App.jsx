@@ -27,9 +27,7 @@ class App extends Component {
   }
   
 
-  // handleSubmit = (searchText) => {
-	// 	this.setState({ searchText })
-	// }
+
 
   getGallery = () => {
     this.setState({ isLoading: true });
@@ -58,7 +56,7 @@ class App extends Component {
         <div className={css.App}>
           
           <Searchbar
-            onSearch={this.handleSubmit} />
+            onSearch={this.getGallery} />
           
           <ImageGallery 
             images={images} /> 

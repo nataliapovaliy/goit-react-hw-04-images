@@ -1,4 +1,5 @@
 import { Component } from "react";
+import css from '../ImageGallery/ImageGallery.module.css';
 
 class ImageGallery extends Component {
     state = {
@@ -13,5 +14,15 @@ class ImageGallery extends Component {
         }
     }
 }
+
+render() {
+    return (
+        <>
+            <ul className={css.ImageGallery}>
+                <ImageGalleryItem />
+            </ul>
+        </>
+    )
+    }
 
 export default ImageGallery

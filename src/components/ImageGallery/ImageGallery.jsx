@@ -7,7 +7,7 @@ export default function ImageGallery({ images }) {
             {images.map(({id, webformatURL}) => {
                 return (
                     <ImageGalleryItem
-                        key={id}
+                        id={id}
                         src={webformatURL} />
                 )
             })

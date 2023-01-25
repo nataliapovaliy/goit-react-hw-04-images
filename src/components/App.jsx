@@ -61,9 +61,12 @@ class App extends Component {
           <ImageGallery 
             images={images} /> 
           
+          {this.isListShown && 
           <Button
             clickHandler={this.loadMore}
             text='Load more' /> 
+          }
+          
           
         </div>
       </>

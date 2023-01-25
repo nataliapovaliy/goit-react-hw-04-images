@@ -8,10 +8,9 @@ export async function fetchSearch (q, page) {
     const searchParams = new URLSearchParams({
         image_type: "photo",
         orientation: "horizontal",
-        safesearch: true,
-        per_page: 20,
+        per_page: 12,
     })
     
-    return await axios(`?key=${API_KEY}&q=${q}&${searchParams}&page=${page}`)
+    return await axios(`?q=${q}&page=${page}&key=${API_KEY}&${searchParams}`)
     .then(response => response.data)
 }

@@ -15,7 +15,7 @@ class ImageGallery extends Component {
     }
 }
 
-render() {
+render () {
     return (
         <>
             <ul className={css.ImageGallery}>

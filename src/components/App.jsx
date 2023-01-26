@@ -6,7 +6,6 @@ import css from '../components/App.module.css';
 import { fetchSearch } from '../services/gallery-api';
 
 class App extends Component {
-
   state = {
     images: [],
     searchText: '',
@@ -16,23 +15,29 @@ class App extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    const { isListShown, page } = this.state;
-    if (
-      (isListShown && prevState.isListShown !== isListShown) ||
-      (isListShown && prevState.page !== page)
-    ) { this.getGallery(); }
-    if (!isListShown && prevState.isListShown !== isListShown) {
-      this.setState({ page: 1, images: [] });
+    const { searchText, page } = this.state;
+
+    if (prevState.searchText !== searchText || prevState.page !== page) {
+      this.getGallery();
+    }
+
+    if (prevState.searchText !== searchText && searchText !== '') {
+      this.setState({ page: 1, images: [], isListShown: false });
     }
   }
   
-
-
+  handleSubmit = (searchText) => {
+      this.setState({ searchText })
+    }
 
   getGallery = () => {
+    const { searchText, page } = this.state;
     this.setState({ isLoading: true });
-    fetchSearch(this.state.searchText, this.state.page)
+
+    fetchSearch(searchText, page)
       .then(data => {
+        console.log('hit.length=', data.hits.length);
+
         this.setState(prevState => ({
           images: [...prevState.images, ...data.hits]
         }));
@@ -56,7 +61,7 @@ class App extends Component {
         <div className={css.App}>
           
           <Searchbar
-            onSearch={this.getGallery} />
+            onSearch={this.handleSubmit} />
           
           <ImageGallery 
             images={images} /> 

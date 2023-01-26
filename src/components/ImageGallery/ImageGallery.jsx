@@ -1,5 +1,6 @@
 import { ImageGalleryItem } from './ImageGalleryItem';
 import css from '../ImageGallery/ImageGallery.module.css';
+import PropTypes from 'prop-types';
 
 export default function ImageGallery({ images }) {
     return (
@@ -7,7 +8,7 @@ export default function ImageGallery({ images }) {
             {images.map(({id, webformatURL}) => {
                 return (
                     <ImageGalleryItem
-                        id={id}
+                        key={id}
                         src={webformatURL} />
                 )
             })
@@ -16,3 +17,8 @@ export default function ImageGallery({ images }) {
     )
 }
 
+ImageGallery.propTypes = {
+    images: PropTypes.arrayOf(
+        PropTypes.shape()
+    ).isRequired,
+}

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
+import Loader from './Loader/Loader';
 import css from '../components/App.module.css';
 import { fetchSearch } from '../services/gallery-api';
 
@@ -55,7 +56,7 @@ class App extends Component {
   }
 
   render() {
-    const { images } = this.state;
+    const { images, isLoading } = this.state;
     return (
       <>
         <div className={css.App}>
@@ -63,15 +64,17 @@ class App extends Component {
           <Searchbar
             onSearch={this.handleSubmit} />
           
+          {images && 
           <ImageGallery 
-            images={images} /> 
+            images={images} />}
           
-          {this.isListShown && 
+          {images.length !== 0 && !isLoading &&
           <Button
             clickHandler={this.loadMore}
             text='Load more' /> 
           }
           
+          {isLoading && <Loader />}
           
         </div>
       </>

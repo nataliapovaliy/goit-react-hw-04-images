@@ -20,4 +20,6 @@ export const ImageGalleryItem = ({src, alt, srcLarge, modalImgLarge}) => {
 ImageGalleryItem.propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
+    srcLarge: PropTypes.string.isRequired,
+    modalImgLarge: PropTypes.func.isRequired,
 }

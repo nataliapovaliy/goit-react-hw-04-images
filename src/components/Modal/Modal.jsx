@@ -12,7 +12,7 @@ export default class Modal extends Component {
     }
 
     closeModal = event => {
-        if (event.code === 'Escape') {
+        if (event.code === 'Escape' || event.currentTarget === event.target) {
             this.props.forCloseModal();
         }
     }

@@ -10,13 +10,15 @@ export default class Searchbar extends Component {
 
     handleChange = ({ target: { value } }) => {
         this.setState({ value })
-        // this.setState({value.toLowerCase()})
     }
 
     handleSubmit = (event) => {
         const { value } = this.state;
         event.preventDefault()
-        if (value.trim() === '') { return; }
+        if (value.trim() === '') {
+            alert("No image for this search");
+            return;
+        }
         this.props.onSearch(value);
         this.setState({value: ''})
     }

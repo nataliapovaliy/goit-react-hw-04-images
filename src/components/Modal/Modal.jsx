@@ -12,7 +12,7 @@ export default class Modal extends Component {
     }
 
     closeModal = event => {
-        if ((event.code === 'Escape') || (event.currentTarget === event.target)) {
+        if (event.code === 'Escape') {
             this.props.forCloseModal();
         }
     }
@@ -20,7 +20,7 @@ export default class Modal extends Component {
     render() {
         return (
         <>
-                <div className={css.Ovarlay}
+                <div className={css.Overlay}
                     onClick={this.closeModal}>
                 <div className={css.Modal}>
                     <img src={this.props.srcLarge} alt=''/>

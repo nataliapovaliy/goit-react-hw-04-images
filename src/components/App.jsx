@@ -12,8 +12,8 @@ class App extends Component {
     searchText: '',
     images: [],
     page: 1,
-    isListShown: false,
     isLoading: false,
+    isButton: false,
     imgLarge: '',
   }
 
@@ -23,32 +23,33 @@ class App extends Component {
     if (prevState.searchText !== searchText || prevState.page !== page) {
       this.getGallery();
     }
-
-    if (prevState.searchText !== searchText && searchText !== '') {
-      this.setState({ page: 1, images: [], isListShown: false });
-    }
   }
   
   handleSubmit = (searchText) => {
-      this.setState({ searchText })
+      this.setState({ searchText, images: [], page: 1 })
     }
 
   getGallery = () => {
     const { searchText, page } = this.state;
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, isButton: true });
 
     fetchSearch(searchText, page)
       .then(data => {
+        if (data.hits.length < 12) {
+          this.setState({ isButton: false });
+        }
+
+        if (data.hits.length === 0) {
+          alert("No image for this search");
+          console.log("No image for this search");
+        }
+
         this.setState(prevState => ({
           images: [...prevState.images, ...data.hits]
         }));
       })
       .catch(error => console.log(error))
       .finally(() => this.setState({ isLoading: false }));
-  }
-
-  showGallery = () => {
-    this.setState(prevState => ({ isListShown: !prevState.isListShown }));
   }
 
   loadMore = () => {
@@ -64,7 +65,7 @@ class App extends Component {
   }
 
   render() {
-    const { images, isLoading, imgLarge } = this.state;
+    const { images, isLoading, isButton, imgLarge } = this.state;
     return (
       <>
         <div className={css.App}>
@@ -72,12 +73,12 @@ class App extends Component {
           <Searchbar
             onSearch={this.handleSubmit} />
           
-          {images && 
+          {images.length > 0 && 
           <ImageGallery 
               images={images}
               modalImgLarge={this.modalImgLarge} />}
           
-          {images.length !== 0 && !isLoading &&
+          {images.length !== 0 && isButton &&
           <Button
             clickHandler={this.loadMore}
             text='Load more' /> 

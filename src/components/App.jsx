@@ -3,16 +3,18 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
+import Modal from "./Modal/Modal";
 import css from '../components/App.module.css';
 import { fetchSearch } from '../services/gallery-api';
 
 class App extends Component {
   state = {
-    images: [],
     searchText: '',
+    images: [],
     page: 1,
     isListShown: false,
     isLoading: false,
+    imgLarge: '',
   }
 
   componentDidUpdate(_, prevState) {
@@ -37,8 +39,6 @@ class App extends Component {
 
     fetchSearch(searchText, page)
       .then(data => {
-        console.log('hit.length=', data.hits.length);
-
         this.setState(prevState => ({
           images: [...prevState.images, ...data.hits]
         }));
@@ -55,8 +55,16 @@ class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   }
 
+  modalImgLarge = srcLarge => {
+    this.setState({ imgLarge: srcLarge });
+  }
+
+  toogleModal = () => {
+    this.setState({ imgLarge: '' });
+  }
+
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, imgLarge } = this.state;
     return (
       <>
         <div className={css.App}>
@@ -66,7 +74,8 @@ class App extends Component {
           
           {images && 
           <ImageGallery 
-            images={images} />}
+              images={images}
+              modalImgLarge={this.modalImgLarge} />}
           
           {images.length !== 0 && !isLoading &&
           <Button
@@ -75,6 +84,10 @@ class App extends Component {
           }
           
           {isLoading && <Loader />}
+
+          {imgLarge && <Modal
+            forCloseModal={this.toogleModal}
+            srcLarge={imgLarge} />}
           
         </div>
       </>

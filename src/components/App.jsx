@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { useState } from "react";
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
@@ -7,36 +7,36 @@ import Modal from "./Modal/Modal";
 import css from '../components/App.module.css';
 import { fetchSearch } from '../services/gallery-api';
 
-class App extends Component {
-  state = {
-    searchText: '',
-    images: [],
-    page: 1,
-    isLoading: false,
-    isButton: false,
-    imgLarge: '',
-  }
+const App = () => {
+  const [searchText, setSearchText] = useState('')
+  const [images, setImages] = useState([])
+  const [page, setPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isButton, setIsButton] = useState(false)
+  const [imgLarge,setImgLarge] = useState('')
 
   componentDidUpdate(_, prevState) {
     const { searchText, page } = this.state;
 
     if (prevState.searchText !== searchText || prevState.page !== page) {
-      this.getGallery();
+      getGallery();
     }
   }
   
-  handleSubmit = (searchText) => {
-      this.setState({ searchText, images: [], page: 1 })
+  const handleSubmit = (searchText) => {
+    setSearchText(searchText);
+    setImages([]);
+    setPage(1);
     }
 
-  getGallery = () => {
-    const { searchText, page } = this.state;
-    this.setState({ isLoading: true, isButton: true });
+  function getGallery() {
+    setIsLoading(true)
+    setIsButton(true)
 
     fetchSearch(searchText, page)
       .then(data => {
         if (data.hits.length < 12) {
-          this.setState({ isButton: false });
+          setIsButton(false)
         }
 
         if (data.hits.length === 0) {
@@ -52,48 +52,46 @@ class App extends Component {
       .finally(() => this.setState({ isLoading: false }));
   }
 
-  loadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+  const loadMore = () => {
+    setPage(page + 1);
   }
 
-  modalImgLarge = srcLarge => {
-    this.setState({ imgLarge: srcLarge });
+  const modalImgLarge = srcLarge => {
+    setImgLarge(srcLarge);
   }
 
-  toogleModal = () => {
-    this.setState({ imgLarge: '' });
+  const toogleModal = () => {
+    setImgLarge('')
   }
 
-  render() {
-    const { images, isLoading, isButton, imgLarge } = this.state;
     return (
       <>
         <div className={css.App}>
           
           <Searchbar
-            onSearch={this.handleSubmit} />
+            onSearch={handleSubmit} />
           
           {images.length > 0 && 
           <ImageGallery 
               images={images}
-              modalImgLarge={this.modalImgLarge} />}
+              modalImgLarge={modalImgLarge} />}
           
           {images.length !== 0 && isButton &&
           <Button
-            clickHandler={this.loadMore}
+            clickHandler={loadMore}
             text='Load more' /> 
           }
           
           {isLoading && <Loader />}
 
           {imgLarge && <Modal
-            forCloseModal={this.toogleModal}
+            forCloseModal={toogleModal}
             srcLarge={imgLarge} />}
           
         </div>
       </>
     )
   }
-};
+
 
 export default App

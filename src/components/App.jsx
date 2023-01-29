@@ -6,6 +6,7 @@ import Loader from './Loader/Loader';
 import Modal from "./Modal/Modal";
 import css from '../components/App.module.css';
 import { fetchSearch } from '../services/gallery-api';
+import { useEffect } from "react";
 
 const App = () => {
   const [searchText, setSearchText] = useState('')
@@ -15,21 +16,15 @@ const App = () => {
   const [isButton, setIsButton] = useState(false)
   const [imgLarge,setImgLarge] = useState('')
 
-  componentDidUpdate(_, prevState) {
-    const { searchText, page } = this.state;
+  // componentDidUpdate(_, prevState) {
+  //   const { searchText, page } = this.state;
 
-    if (prevState.searchText !== searchText || prevState.page !== page) {
-      getGallery();
-    }
-  }
-  
-  const handleSubmit = (searchText) => {
-    setSearchText(searchText);
-    setImages([]);
-    setPage(1);
-    }
+  //   if (prevState.searchText !== searchText || prevState.page !== page) {
+  //     getGallery();
+  //   }
+  // }
 
-  function getGallery() {
+  useEffect(() => {
     setIsLoading(true)
     setIsButton(true)
 
@@ -44,13 +39,17 @@ const App = () => {
           console.log("No image for this search");
         }
 
-        this.setState(prevState => ({
-          images: [...prevState.images, ...data.hits]
-        }));
+        setImages([...images, ...data.hits]);
       })
       .catch(error => console.log(error))
       .finally(() => this.setState({ isLoading: false }));
-  }
+  }, [searchText, page])
+  
+  const handleSubmit = (searchText) => {
+    setSearchText(searchText);
+    setImages([]);
+    setPage(1);
+    }
 
   const loadMore = () => {
     setPage(page + 1);

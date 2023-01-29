@@ -6,8 +6,9 @@ import { useState } from "react";
 const Searchbar = (onSearch) => {
     const [value, setValue] = useState('')
 
-    const handleChange = ({ target: { value } }) => {
-        this.setState({ value })
+    const handleChange = ({ target }) => {
+        const {value} = target
+        setValue( value )
     }
 
     const handleSubmit = (event) => {

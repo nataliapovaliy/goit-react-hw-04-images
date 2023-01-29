@@ -16,14 +16,6 @@ const App = () => {
   const [isButton, setIsButton] = useState(false)
   const [imgLarge,setImgLarge] = useState('')
 
-  // componentDidUpdate(_, prevState) {
-  //   const { searchText, page } = this.state;
-
-  //   if (prevState.searchText !== searchText || prevState.page !== page) {
-  //     getGallery();
-  //   }
-  // }
-
   useEffect(() => {
     setIsLoading(true)
     setIsButton(true)
@@ -39,13 +31,13 @@ const App = () => {
           console.log("No image for this search");
         }
 
-        setImages([...images, ...data.hits]);
+        setImages(images => [...images, ...data.hits]);
       })
       .catch(error => console.log(error))
-      .finally(() => this.setState({ isLoading: false }));
+      .finally(() => setIsLoading(false));
   }, [searchText, page])
   
-  const handleSubmit = (searchText) => {
+  function handleSubmit (searchText) {
     setSearchText(searchText);
     setImages([]);
     setPage(1);

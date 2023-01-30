@@ -17,6 +17,7 @@ const App = () => {
   const [imgLarge,setImgLarge] = useState('')
 
   useEffect(() => {
+    console.log('useEffect>>');
     setIsLoading(true)
     setIsButton(true)
 
@@ -35,9 +36,9 @@ const App = () => {
       })
       .catch(error => console.log(error))
       .finally(() => setIsLoading(false));
-  }, [searchText, page])
+  }, [searchText, page]);
   
-  function handleSubmit (searchText) {
+  const handleSubmit = (searchText) => {
     setSearchText(searchText);
     setImages([]);
     setPage(1);

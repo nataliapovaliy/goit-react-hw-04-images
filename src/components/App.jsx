@@ -17,6 +17,7 @@ const App = () => {
   const [imgLarge,setImgLarge] = useState('')
 
   useEffect(() => {
+    if (searchText === '') return;
     console.log('useEffect>>');
     setIsLoading(true)
     setIsButton(true)
@@ -84,6 +85,5 @@ const App = () => {
       </>
     )
   }
-
 
 export default App

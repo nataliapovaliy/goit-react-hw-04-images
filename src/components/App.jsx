@@ -46,7 +46,7 @@ const App = () => {
     }
 
   const loadMore = () => {
-    setPage(page + 1);
+    setPage(prev => (prev + 1));
   }
 
   const modalImgLarge = srcLarge => {
